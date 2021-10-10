@@ -10,7 +10,8 @@ bool is_mouse, is_left_handed, is_enable_toggle_smoke;
 sf::Sprite bg, up, left, right, device, smoke, wave;
 
 int key_state = 0;
-
+int previous_key_state = 0;
+    
 bool left_key_state = false;
 bool right_key_state = false;
 bool wave_key_state = false;
@@ -299,6 +300,14 @@ void draw() {
         key_state = 0;
         window.draw(up);
     }
+    
+    if(previous_key_state == key_state) {
+       if(key_state == 1) {
+           key_state = 2;
+       } else if(key_state == 2) {
+           key_state = 1;
+       }
+    }
 
     if (key_state == 1) {
         if ((clock() - std::max(timer_right_key, timer_wave_key)) / CLOCKS_PER_SEC > BONGO_KEYPRESS_THRESHOLD) {
@@ -330,6 +339,8 @@ void draw() {
             window.draw(up);
         }
     }
+    
+    previous_key_state = key_state;
 
     // drawing tablet
     if (!is_mouse) {
